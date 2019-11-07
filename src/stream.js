@@ -17,14 +17,13 @@ module.exports = async ({ db, ns, ts, coll }) => {
       .find({}, { ts: 1 })
       .sort({ $natural: -1 })
       .limit(1)
-      .nextObject()
+      .next()
 
     return doc ? doc.ts : Timestamp(0, (Date.now() / 1000 | 0))
   }
 
   if (ns) query.ns = { $regex: regex(ns) }
   query.ts = { $gt: await time() }
-
   return (await coll.find(query, {
     tailable: true,
     awaitData: true,
