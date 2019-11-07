@@ -31,6 +31,7 @@ const toCb = fn => cb => {
 
 module.exports = (uri, options = {}) => {
   let db
+  let clientConnection
   let stream
   let connected = false
   const { ns, since, coll, ...opts } = options
@@ -40,8 +41,9 @@ module.exports = (uri, options = {}) => {
   uri = uri || MONGO_URI
 
   if (typeof uri !== 'string') {
-    if (uri && uri.collection) {
-      db = uri
+    if (uri && uri.db) {
+      clientConnection = uri
+      db = clientConnection.db()
       connected = true
     } else {
       throw new Error('Invalid mongo db.')
@@ -50,7 +52,10 @@ module.exports = (uri, options = {}) => {
 
   async function connect() {
     if (connected) return db
-    db = await MongoClient.connect(uri, opts)
+    await MongoClient.connect(uri, opts).then(client =>{
+      clientConnection = client
+      db = client.db()
+    } )
     connected = true
   }
 
@@ -81,7 +86,7 @@ module.exports = (uri, options = {}) => {
   async function destroy() {
     await stop()
     if (!connected) return oplog
-    await db.close(true)
+    await clientConnection.close(true)
     connected = false
     return oplog
   }
