@@ -10,7 +10,7 @@ branches:
 services:
   - mongodb
 before_script:
-  - echo "replication:" | sudo tee -a /etc/mongod.conf --replSet test 
+  - echo "replication:" | sudo tee -a /etc/mongod.conf 
   - |-
     echo "  replSetName: \"test\"" | sudo tee -a /etc/mongod.conf
   - sudo service mongod restart 
