@@ -1,7 +1,6 @@
 # mongo-oplog
 
-https://travis-ci.org/TaSiya/mongo-oplog.svg?branch=master
-[![NPM version](https://img.shields.io/npm/v/mongo-oplog.svg)](https://www.npmjs.com/package/u5-mongo-oplog)
+[![Build Status](https://travis-ci.org/TaSiya/mongo-oplog.svg?branch=master)](https://travis-ci.org/TaSiya/mongo-oplog)
 
 Listening to MongoDB live changes using oplog.
 
