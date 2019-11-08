@@ -10,11 +10,11 @@ branches:
 services:
   - mongodb
 before_script:
-  - echo "replication:" | sudo tee -a /etc/mongod.conf
+  - echo "replication:" | sudo tee -a /etc/mongod.conf --replSet test 
   - |-
-    echo "  replSetName: \"rs0\"" | sudo tee -a /etc/mongod.conf
-  - sudo service mongod restart
+    echo "  replSetName: \"test\"" | sudo tee -a /etc/mongod.conf
+  - sudo service mongod restart 
   - travis_retry npm install
   - |-
-    mongo --eval 'rs.initiate({_id:"rs0", members: [{"_id":1, "host":"localhost:27017"}]})'
+    mongo --eval 'rs.initiate({_id:"test", version: 1, members: [{"_id":1, "host":"localhost:27017"}]})'
   - mongo --eval 'rs.status()'
